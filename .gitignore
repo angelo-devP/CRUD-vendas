@@ -1,0 +1,14 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+*.log
+*.db
+*.sqlite
+packages/
+*.nupkg
+*.snupkg
+artifacts/
