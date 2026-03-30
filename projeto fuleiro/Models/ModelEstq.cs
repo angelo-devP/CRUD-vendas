@@ -4,7 +4,9 @@
     {
         public int Id { get; set; }
         public int ProdutoId { get; set; }
-        public int Quantidade { get; set; } // controla QtdEstoq, EntradaEstoq, SaidaEstoq
-        public Produto Produto { get; set; } // opcional
+        public int Quantidade { get; set; }
+
+        // Navegação opcional
+        public Produto Produto { get; set; }
     }
 }

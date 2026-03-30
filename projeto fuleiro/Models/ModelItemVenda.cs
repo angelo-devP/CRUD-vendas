@@ -8,6 +8,8 @@
         public int Quantidade { get; set; }
         public decimal Subtotal { get; set; }
 
-        public Produto Produto { get; set; } // facilita consultar o produto no ConsulProd
+        // Navegação
+        public Venda Venda { get; set; }
+        public Produto Produto { get; set; }
     }
 }

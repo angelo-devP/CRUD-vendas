@@ -10,6 +10,8 @@ namespace projeto_fuleiro.Models
         public DateTime Data { get; set; }
         public decimal Total { get; set; }
 
-        public List<ItemVenda> Itens { get; set; } = new List<ItemVenda>(); // para Vender, EditarVenda e ListarVendas
+        // Relacionamento
+        public Cliente Cliente { get; set; }
+        public List<ItemVenda> Itens { get; set; } = new List<ItemVenda>();
     }
 }
