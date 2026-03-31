@@ -2,103 +2,80 @@
 using projeto_fuleiro.Data;
 using projeto_fuleiro.Models;
 
-namespace projeto_fuleiro.Repositories
+namespace projeto_fuleiro.Repositories;
+public class ProdutoRepository
 {
-    public class ProdutoRepository
+    private ConexaoDB conexao = new ConexaoDB();
+
+    // Inserir produto e retornar ID
+    public int Inserir(Produto p)
     {
-        private ConexaoDB conexao = new ConexaoDB();
+        using var conn = conexao.GetConexao();
+        conn.Open();
 
-        // Cadastrar produto
-        public void Inserir(Produto p)
+        string sqlInsert = "INSERT INTO Produto (Nome, Preco) VALUES (@Nome, @Preco)";
+        using var cmd = new MySqlCommand(sqlInsert, conn);
+
+        cmd.Parameters.AddWithValue("@Nome", p.Nome);
+        cmd.Parameters.AddWithValue("@Preco", p.Preco);
+
+        cmd.ExecuteNonQuery();
+
+        string sqlId = "SELECT LAST_INSERT_ID()";
+        using var cmdId = new MySqlCommand(sqlId, conn);
+
+        return Convert.ToInt32(cmdId.ExecuteScalar());
+    }
+
+    // Buscar por nome
+    public Produto BuscarPorNome(string nome)
+    {
+        using var conn = conexao.GetConexao();
+        conn.Open();
+
+        string sql = "SELECT * FROM Produto WHERE Nome = @Nome";
+        using var cmd = new MySqlCommand(sql, conn);
+
+        cmd.Parameters.AddWithValue("@Nome", nome);
+
+        using var reader = cmd.ExecuteReader();
+
+        if (reader.Read())
         {
-            using var conn = conexao.GetConexao();
-            conn.Open();
-
-            string sql = "INSERT INTO Produto (Nome, Preco, EstoqueAtual) VALUES (@Nome, @Preco, @EstoqueAtual)";
-            using var cmd = new MySqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@Nome", p.Nome);
-            cmd.Parameters.AddWithValue("@Preco", p.Preco);
-            cmd.Parameters.AddWithValue("@EstoqueAtual", p.EstoqueAtual);
-
-            cmd.ExecuteNonQuery();
-        }
-
-        // Editar produto
-        public void Editar(Produto p)
-        {
-            using var conn = conexao.GetConexao();
-            conn.Open();
-
-            string sql = "UPDATE Produto SET Nome=@Nome, Preco=@Preco, EstoqueAtual=@EstoqueAtual WHERE Id=@Id";
-            using var cmd = new MySqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@Nome", p.Nome);
-            cmd.Parameters.AddWithValue("@Preco", p.Preco);
-            cmd.Parameters.AddWithValue("@EstoqueAtual", p.EstoqueAtual);
-            cmd.Parameters.AddWithValue("@Id", p.Id);
-
-            cmd.ExecuteNonQuery();
-        }
-
-        // Remover produto
-        public void Remover(int id)
-        {
-            using var conn = conexao.GetConexao();
-            conn.Open();
-
-            string sql = "DELETE FROM Produto WHERE Id=@Id";
-            using var cmd = new MySqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@Id", id);
-
-            cmd.ExecuteNonQuery();
-        }
-
-        // Listar todos os produtos
-        public List<Produto> Listar()
-        {
-            var lista = new List<Produto>();
-            using var conn = conexao.GetConexao();
-            conn.Open();
-
-            string sql = "SELECT Id, Nome, Preco, EstoqueAtual FROM Produto";
-            using var cmd = new MySqlCommand(sql, conn);
-            using var reader = cmd.ExecuteReader();
-
-            while (reader.Read())
+            return new Produto
             {
-                lista.Add(new Produto
-                {
-                    Id = reader.GetInt32("Id"),
-                    Nome = reader.GetString("Nome"),
-                    Preco = reader.GetDecimal("Preco"),
-                    EstoqueAtual = reader.GetInt32("EstoqueAtual")
-                });
-            }
-
-            return lista;
+                Id = reader.GetInt32("Id"),
+                Nome = reader.GetString("Nome"),
+                Preco = reader.GetDecimal("Preco")
+            };
         }
 
-        public Produto? BuscarPorId(int id)
+        return null;
+    }
+
+    // Listar todos
+    public List<Produto> Listar()
+    {
+        List<Produto> lista = new List<Produto>();
+
+        using var conn = conexao.GetConexao();
+        conn.Open();
+
+        string sql = "SELECT * FROM Produto";
+        using var cmd = new MySqlCommand(sql, conn);
+
+        using var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
         {
-            using var conn = conexao.GetConexao();
-            conn.Open();
-
-            string sql = "SELECT Id, Nome, Preco, EstoqueAtual FROM Produto WHERE Id=@Id";
-            using var cmd = new MySqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@Id", id);
-
-            using var reader = cmd.ExecuteReader();
-            if (reader.Read())
+            lista.Add(new Produto
             {
-                return new Produto
-                {
-                    Id = reader.GetInt32("Id"),
-                    Nome = reader.GetString("Nome"),
-                    Preco = reader.GetDecimal("Preco"),
-                    EstoqueAtual = reader.GetInt32("EstoqueAtual")
-                };
-            }
-
-            return null; // produto não encontrado
+                Id = reader.GetInt32("Id"),
+                Nome = reader.GetString("Nome"),
+                Preco = reader.GetDecimal("Preco")
+            });
         }
+
+        return lista;
     }
 }

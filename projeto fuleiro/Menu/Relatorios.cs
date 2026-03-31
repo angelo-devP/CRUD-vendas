@@ -38,22 +38,22 @@ namespace projeto_fuleiro.Menu
 
         public void RelatProd()
         {
-            
+            Console.WriteLine("Gerando relatório dos produtos...");
         }
 
         public void RelatVendas()
         {
-
+            Console.WriteLine("Gerando relatório das vendas...");
         }
 
         public void RelatEstq()
         {
-
+            Console.WriteLine("Gerando relatório do estoque...");
         }
 
         public void RelatFinan()
         {
-
+            Console.WriteLine("Gerando relatório financeiro...");
         }
     }
 }

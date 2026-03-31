@@ -1,4 +1,5 @@
-﻿using System;
+﻿using projeto_fuleiro.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using static projeto_fuleiro.Helpers;
@@ -38,7 +39,19 @@ namespace projeto_fuleiro.Menu
 
         public void CadastrarProd()
         {
-            Console.WriteLine("Cadastrando...");
+            Console.Write("Nome: ");
+            string nome = Console.ReadLine();
+
+            Console.Write("Preço: ");
+            decimal preco = decimal.Parse(Console.ReadLine());
+
+            Console.Write("Quantidade: ");
+            int quantidade = int.Parse(Console.ReadLine());
+
+            var service = new ProdutoService();
+            service.CadastrarProduto(nome, preco, quantidade);
+
+            Console.WriteLine("Cadastrado!");
         }
 
         public void EditarProd()
