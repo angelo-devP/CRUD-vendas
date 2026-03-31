@@ -18,8 +18,7 @@ namespace projeto_fuleiro.Menu
                 Console.WriteLine("2 - Relatório de vendas");
                 Console.WriteLine("3 - Relatório de estoque");
                 Console.WriteLine("4 - Relatório financeiro");
-                Console.WriteLine("5 - Relatório de clientes");
-                Console.WriteLine("6 - Voltar ao menu principal");
+                Console.WriteLine("5 - Voltar ao menu principal");
 
                 string opcao = Console.ReadLine();
 
@@ -27,11 +26,10 @@ namespace projeto_fuleiro.Menu
                    () => RelatProd(),
                    () => RelatVendas(),
                    () => RelatEstq(),
-                   () => RelatFinan(),
-                   () => RelatClientes()
+                   () => RelatFinan()
                 );
 
-                if (opcao == "6")
+                if (opcao == "5")
                 {
                     return;
                 }
@@ -54,11 +52,6 @@ namespace projeto_fuleiro.Menu
         }
 
         public void RelatFinan()
-        {
-
-        }
-
-        public void RelatClientes()
         {
 
         }
